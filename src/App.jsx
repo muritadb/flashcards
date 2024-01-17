@@ -35,29 +35,28 @@ const cardsInfo = [
 ]
 
 const App = () => {
-  const [isOpen, setIsOpen] = useState(cardsInfo)
+  const [activeId, setActiveId] = useState(0)
 
 
-  const handleClick = (id) => {
-    cardsInfo.filter((card) => {
-      if (card.id === id) {
-        setIsOpen(v => !v)
-
-        console.log(id, isOpen)
-      }
-    })
-
-
-  }
+  const handleClick = (id) => setActiveId((a) => (a === id ? 0 : id))
 
   return (
     <ul className="flashcards">
-      {cardsInfo.map(({ id, question, answer }) => (
-        <li key={id} onClick={() => handleClick(id)} className={isOpen ? "card" : "card-answer"}>
-          {isOpen ? question : answer}
-        </li>
-      ))}
-    </ul>
+      {cardsInfo.map(({ id, question, answer }) => {
+        const active = id === activeId
+
+        return (
+          <li
+            className={`card ${active ? "active" : ""}`}
+            key={id}
+            onClick={() => handleClick(id)}
+          >
+            {active ? answer : question}
+          </li>
+        )
+      })
+      }
+    </ul >
   )
 }
 
